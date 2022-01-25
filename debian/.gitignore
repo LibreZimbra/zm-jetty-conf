@@ -3,3 +3,6 @@
 /.debhelper
 /files
 /zimbra-jetty-conf
+/zimbra-jetty-distribution
+/changelog
+/tmp

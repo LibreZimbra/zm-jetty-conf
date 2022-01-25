@@ -1,7 +1,7 @@
 Source: zimbra-jetty-conf
 Section: mail
 Priority: optional
-Build-Depends: debhelper (>=9)
+Build-Depends: debhelper (>=9), wget
 Standards-Version: 3.9.6
 Maintainer: Enrico Weigelt, metux IT consult <info@metux.net>
 Uploaders: Enrico Weigelt, metux IT consult <info@metux.net>
@@ -12,3 +12,10 @@ Priority: optional
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: LibreZimbra jetty config
+
+Package: zimbra-jetty-distribution
+Section: mail
+Priority: optional
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: LibreZimbra jetty distribution

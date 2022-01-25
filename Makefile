@@ -1,11 +1,23 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-all:
+JETTY_VERSION=9.4.44.v20210927
+JETTY_TARBALL=jetty-distribution-$(JETTY_VERSION).tar.gz
+JETTY_URL=https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/$(JETTY_VERSION)/$(JETTY_TARBALL)
+JETTY_DIR=tmp/jetty-distribution-$(JETTY_VERSION)
+
+all: jetty-bin
 	echo -n
+
+tmp/$(JETTY_TARBALL):
+	mkdir -p tmp
+	(cd tmp && wget "$(JETTY_URL)")
+
+jetty-bin: tmp/$(JETTY_TARBALL)
+	(cd tmp && tar -xzf "$(JETTY_TARBALL)")
 
 include build.mk
 
-install:
+install: all
 	$(call mk_install_dir, jetty_base/webapps/zimbra)
 	$(call mk_install_dir, jetty_base/etc)
 	$(call mk_install_dir, jetty_base/modules)
@@ -29,5 +41,13 @@ install:
 
 	(cd $(INSTAlL_DIR) && ln -s jetty_base mailboxd)
 
+	$(call mk_install_dir, common)
+	cp -R $(JETTY_DIR) $(INSTALL_DIR)/common/jetty_home
+	rm -Rf $(INSTALL_DIR)/common/jetty_home/etc/jetty.xml \
+	       $(INSTALL_DIR)/common/jetty_home/logs \
+	       $(INSTALL_DIR)/common/jetty_home/resources \
+	       $(INSTALL_DIR)/common/jetty_home/webapps \
+	       $(INSTALL_DIR)/common/jetty_home/demo-base
+
 clean:
-	echo -n
+	rm -Rf tmp
